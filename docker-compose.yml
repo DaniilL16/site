@@ -1,0 +1,31 @@
+version: '2'
+services:
+ db:
+  image: mariadb:10.6
+  restart: always
+  environment:
+   - MYSQL_ROOT_PASSWORD=toor
+   - MYSQL_PASSWORD=P@ssw0rd
+   - MYSQL_DATABASE=nextcloud
+   - MYSQL_USER=nextcloud
+  networks:
+   host:
+ app:
+  image: nextcloud:fpm
+  restart: always
+  links:
+   - db
+  environment:
+   - MYSQL_PASSWORD=P@ssw0rd
+   - MYSQL_DATABASE=nextcloud
+   - MYSQL_USER=nextcloud
+   - MYSQL_HOST=db
+  networks:
+   host:
+ web:
+  image: nginx
+  restart: always
+  links:
+   - app
+  networks:
+   host:
